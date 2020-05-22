@@ -174,15 +174,48 @@ function openFileEvent() {
     fileReader.readAsText(fileToLoad, "UTF-8")
 }
 
+function openFileEvent2() {
+    var fileToLoad = document.getElementById("openFile2").files[0];
+
+    var fileReader = new FileReader();
+    fileReader.onload = function (fileLoadedEvent) {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+            document.getElementById("operacion2").value = "" + textFromFileLoaded;
+    };
+    fileReader.readAsText(fileToLoad, "UTF-8")
+}
+
 function saveEvent() {
     var textToSave = document.getElementById("operacion").value;
     var textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
-    //var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
-    //var fileNameToSaveAs = "guardado.java";
+    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+    var fileNameToSaveAs = "guardado.java";
 
-    var a = document.getElementById("a");
-    a.href = URL.createObjectURL(textToSaveAsBlob);
-    a.download = "guardado.java";
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+
+    downloadLink.click();
+
+}
+
+function saveEvent2() {
+    var textToSave = document.getElementById("operacion2").value;
+    var textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
+    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+    var fileNameToSaveAs = "guardado2.java";
+
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+
+    downloadLink.click();
 
 }
 
