@@ -163,6 +163,39 @@ function compare_fila(a, b) {
     }
 }
 
+function openFileEvent() {
+    var fileToLoad = document.getElementById("openFile").files[0];
+
+    var fileReader = new FileReader();
+    fileReader.onload = function (fileLoadedEvent) {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+            document.getElementById("operacion").value = "" + textFromFileLoaded;
+    };
+    fileReader.readAsText(fileToLoad, "UTF-8")
+}
+
+function saveEvent() {
+    var textToSave = document.getElementById("operacion").value;
+    var textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
+    //var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+    //var fileNameToSaveAs = "guardado.java";
+
+    var a = document.getElementById("a");
+    a.href = URL.createObjectURL(textToSaveAsBlob);
+    a.download = "guardado.java";
+
+}
+
+
+
+function download(text, name, type) {
+    var textToSave = document.getElementById("operacion").value;
+    var a = document.getElementById("a");
+    var file = new Blob([textToSave], {type: type});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+  }
+
 //Comparing based on the property qty
 function compare_qty(a, b) {
     // a should come before b in the sorted order
