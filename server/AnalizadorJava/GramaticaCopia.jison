@@ -42,9 +42,19 @@
     arrSimbolos.push("3","Geeks", "for", "0","0");*/
     var Obj1 = {              
         arrSimbolos: [], 
-        arrErrores:[] 
+        arrErrores:[],
+        arrAST:[]
     }; 
     let no=0;
+
+    function addAST(tip){
+        console.log("Tipo->"+tip);
+        var ObjAST = {              
+        tipo: tip
+        }
+        Obj1.arrAST.push(ObjAST);
+    }
+
     function add(num,lex,tk,fil,col){
         console.log("T->"+num+" "+lex+" "+tk+" "+fil+" "+col);
         var Obj = {              
@@ -76,6 +86,9 @@
     var arraynew = ['Geeks', 'for', 'Geeks']; 
     // Push an array to object 
     Obj.arrayOne.push(arraynew); */
+
+    //AST
+    
 %}
 
 
@@ -218,8 +231,8 @@ INI: INI LISTA {}
     | LISTA {}
     | error {addErr(no2++,"Sintactico",@1.first_line,this._$.first_column,"No se esperaba el token: "+yytext);};
 
-LISTA : IMPORT { }
-    | CLASE{ };
+LISTA : IMPORT { addAST("Import"); }
+    | CLASE{ addAST("Clase");};
 //-----------------------------IMPORTS 
 IMPORT : Rimport LI PuntoComa { add(no++,$1,"Rimport",@1.first_line,@1.first_column);add(no++,$3,"PuntoComa",@3.first_line,@3.first_column);
 };
@@ -240,20 +253,21 @@ CLASE : Rclass tk_id LlaveAbre CODIGO LlaveCierra { add(no++,$1,"Rclass",@1.firs
 CODIGO: CODIGO SENTENCIAS {}
       | SENTENCIAS {};
 
-SENTENCIAS :   DECLARACION  {} 
-            |   ASIGNACION  {}
-            |   METODO {} 
-            |   RETURN{}
-            |   IF {}
-            |   FOR {}
-            |   WHILE {}
-            |   DO_WHILE {}
-            |   SWITCH {}
-            |   BREAK {}
-            |   CONTINUE {}
+SENTENCIAS :   DECLARACION  {addAST("Declaracion");} 
+            |   ASIGNACION  {addAST("Asignacion");}
+            |   METODO {addAST("Metodo");} 
+            |   RETURN{addAST("Return");}
+            |   IF {addAST("If");}
+            |   FOR {addAST("For");}
+            |   WHILE {addAST("While");}
+            |   DO_WHILE {addAST("Do_While");}
+            |   SWITCH {addAST("Switch");}
+            |   BREAK {addAST("Break");}
+            |   CONTINUE {addAST("Continue");}
             |   tk_id ParAbre VALOR_LLAMADA ParCierra PuntoComa{ add(no++,$1,"tk_id",@1.first_line,@1.first_column); add(no++,$2,"ParAbre",@2.first_line,@2.first_column);
- add(no++,$4,"ParCierra",@4.first_line,@4.first_column);  add(no++,$5,"PuntoComa",@5.first_line,@5.first_column);}
-            |   PRINT{}
+ add(no++,$4,"ParCierra",@4.first_line,@4.first_column);  add(no++,$5,"PuntoComa",@5.first_line,@5.first_column);
+ addAST("Llamada");}
+            |   PRINT{ addAST("Print");}
             | error {addErr(no2++,"Sintactico",@1.first_line,this._$.first_column,"No se esperaba el token: "+yytext);};
 
 //----------------------- DECLARACION
