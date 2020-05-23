@@ -13,13 +13,6 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	/*file := "test.txt"
-	content, err := ioutil.ReadFile(file)
-
-	if err != nil {
-		log.Fatalf("file not found")
-	}*/
-
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css/"))))
 	http.Handle("/fonts/", http.StripPrefix("/fonts/", http.FileServer(http.Dir("fonts/"))))
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("js/"))))

@@ -8,6 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="../css/layout.css" rel="stylesheet" type="text/css" media="all">
   <script src="../js/index.js"></script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.8/themes/default/style.min.css" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.8/jstree.min.js"></script>
+
+
   <style>
     table {
       width: 300px;
@@ -22,8 +28,19 @@
       padding: 2px 3px;
       text-align: center;
     }
+
+    h1 {
+      font-size: 1.8em;
+    }
+
+    .demo {
+      overflow: auto;
+      border: 1px solid silver;
+      min-height: 100px;
+    }
   </style>
 </head>
+
 
 <body>
   <div class="toolbar" role="banner">
@@ -90,15 +107,9 @@
     <input type="hidden" #selection>
 
     <div class="card-container">
-      <div class="card card-small">
-        <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" /></svg>
-
-        <span>NEW FILE</span>
-      </div>
-
-      <div class="card card-small">
-        <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" id="a" width="24" height="24" viewBox="0 0 24 24">
+          <div class="card card-small">
+        <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" id="a" width="24" height="24"
+          viewBox="0 0 24 24">
           <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z" /></svg>
         <button class="btn-save" onclick="saveEvent()"> SAVE FILE</button>
       </div>
@@ -106,34 +117,17 @@
       <div class="card card-small">
         <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z" /></svg>
-          <button class="btn-save" onclick="saveEvent2()"> SAVE FILE 2</button>
+        <button class="btn-save" onclick="saveEvent2()"> SAVE FILE 2</button>
       </div>
 
-      <div class="card card-small">
-        <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path
-            d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z" />
-        </svg>
-
-        <span>ANALIZAR</span>
+      <div class="card card-small" tabindex="0">
+        <input type="file" id="openFile" onchange="openFileEvent()" />
       </div>
-
-      <div class="card card-small">
-        <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" /></svg>
-
-        <span>REPORTES</span>
-
-      </div>
-
-      <div class="card card-small2" tabindex="0">
-          <input type="file" id="openFile" onchange="openFileEvent()" />
-      </div>
-      <div class="card card-small2" tabindex="0">
+      <div class="card card-small" tabindex="0">
         <input type="file" id="openFile2" onchange="openFileEvent2()" />
       </div>
-      
-      
+
+
 
 
     </div>
@@ -147,11 +141,11 @@
       </tr>
       <tr>
         <th>
-          <textarea style="overflow-y: scroll; height:400px;" class="area" id="operacion" rows="4" cols="50">
+          <textarea style="overflow-y: scroll; height:400px;" class="terminal" id="operacion" rows="4" cols="50">
           </textarea>
         </th>
         <th>
-          <textarea style="overflow-y: scroll; height:400px;" class="area" id="operacion2" rows="4"
+          <textarea style="overflow-y: scroll; height:400px;" class="terminal" id="operacion2" rows="4"
             cols="50"></textarea>
         </th>
       </tr>
@@ -194,6 +188,19 @@
       </tr>
     </table>
 
+    <div style="width:100%">
+      <h1>Reporte AST</h1>
+      <div id="html" class="demo">
+      </div>
+      <h1>Reporte2 AST</h1>
+      <div id="html2" class="demo">
+      </div>
+    </div>
+
+
+
+
+
 
     <script>
       function createPDF() {
@@ -221,6 +228,7 @@
         win.print();    // PRINT THE CONTENTS.
       }
     </script>
+
 
     <script>
       function createPDF2() {
@@ -302,7 +310,12 @@
         win.print();    // PRINT THE CONTENTS.
       }
     </script>
-    <script src="../js/jquery.min.js"></script>
+
+
+    <script>
+      $('#html').jstree();
+    </script>
+
     <script src="../js/jquery.backtotop.js"></script>
     <script src="../js/jquery.mobilemenu.js"></script>
 </body>
